@@ -1,4 +1,6 @@
-import requests, re
+import re
+import requests
+import json
 
 # User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0
 # r = requests.get('https://dle.rae.es/data/search?w=hola', {'Authorization':'Basic cDY4MkpnaFMzOmFHZlVkQ2lFNDM0'})
@@ -6,10 +8,15 @@ import requests, re
 headrs = {'Authorization': 'Basic cDY4MkpnaFMzOmFHZlVkQ2lFNDM0', 'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'}
 # palabras=["calibre","rinoceronte","elefante","caca","kaka","vacuno"]
 # palabras=["vacuno","elefante"]
-palabras=["rata"]
+palabras=["doctora"]
 for palabra in palabras :
     r = requests.get('https://dle.rae.es/data/search?w=' + palabra, headers=headrs)
     print(r.status_code)
+
+    # save response json for word to its own file
+    with open(palabra + '.json', 'w') as outfile:
+        json.dump(r.json(), outfile)
+
     res = r.json()["res"]
     print res
     # rx = palabra + "[\.\,]]"
